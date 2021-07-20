@@ -1,0 +1,13 @@
+(executable
+ (public_name bbmap_count_table)
+ (name main)
+ (modules main)
+ (libraries core_kernel re2 lib)
+ (preprocess (pps ppx_jane)))
+
+(library
+ (name lib)
+ (modules lib)
+ (libraries core_kernel re2)
+ (inline_tests)
+ (preprocess (pps ppx_jane)))
