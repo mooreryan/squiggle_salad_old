@@ -3,7 +3,7 @@ With no arguments
   $ bbmap_count_table
   ERROR -- you need at least 2 command line arguments!
   
-  bbmap_count_table v1.0
+  bbmap_count_table v0.1.0
   
   usage: bbmap_count_table <sample_name_match> <covstats_1> [covstats_2 ...]
   
@@ -21,7 +21,7 @@ With one arg
   $ bbmap_count_table apple  
   ERROR -- you need at least 2 command line arguments!
   
-  bbmap_count_table v1.0
+  bbmap_count_table v0.1.0
   
   usage: bbmap_count_table <sample_name_match> <covstats_1> [covstats_2 ...]
   
@@ -37,16 +37,20 @@ With one arg
 With a single sample.
 
   $ bbmap_count_table 'mapping___(.*)___' contigs.mapping___sample_1___.covstats.txt
-  sample	Contig_1	Contig_2	Contig_3
-  sample_1	11	22	33
+  contig	sample_1
+  Contig_1	11
+  Contig_2	22
+  Contig_3	33
 
 With multiple samples
 
   $ bbmap_count_table 'mapping___(.*)___' contigs.mapping___sample_1___.covstats.txt contigs.mapping___sample_2___.covstats.txt contigs.mapping___sample_3___.covstats.txt
-  sample	Contig_1	Contig_2	Contig_3	Contig_4	Contig_5
-  sample_1	11	22	33	0	0
-  sample_2	0	22	33	44	0
-  sample_3	0	0	0	0	55
+  contig	sample_1	sample_2	sample_3
+  Contig_1	11	0	0
+  Contig_2	22	2200	0
+  Contig_3	33	3300	0
+  Contig_4	0	4400	0
+  Contig_5	0	0	550000
 
 With bad pattern
 

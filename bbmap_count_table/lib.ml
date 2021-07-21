@@ -31,6 +31,8 @@ let try1 ~msg f a =
 let int_of_string s = try1 ~msg:"Error parsing int" Int.of_string s
 let float_of_string s = try1 ~msg:"Error parsing int" Float.of_string s
 
+let sort set = Hash_set.to_list set |> List.sort ~compare:String.compare
+
 (* Program stuff *)
 
 let expected_header =
@@ -101,15 +103,13 @@ let process_coverage ~all_samples ~all_contigs ~count_table coverage =
   Hash_set.add all_samples sample;
   Hash_set.add all_contigs contig;
   let counts =
-    Hashtbl.find_or_add count_table sample ~default:(fun () ->
+    Hashtbl.find_or_add count_table contig ~default:(fun () ->
         Hashtbl.create (module String))
   in
-  if Hashtbl.mem counts contig then
+  if Hashtbl.mem counts sample then
     Or_error.error_string [%string "%{contig} is duplicated in %{sample}"]
   else
-    Or_error.return @@ Hashtbl.set counts ~key:contig ~data:coverage.num_reads
-
-let sort set = Hash_set.to_list set |> List.sort ~compare:String.compare
+    Or_error.return @@ Hashtbl.set counts ~key:sample ~data:coverage.num_reads
 
 (* Process one of the stats files. Get the sample name, convert rows to
    coveragesand track the samples, contigs, and counts. *)
@@ -126,20 +126,20 @@ let process_stats_file ~all_samples ~all_contigs ~count_table ~pattern ~filename
   try0 ~msg:[%string "Error processing stats_file %{filename}"] f
 
 let print_count_table ~sorted_samples ~sorted_contigs ~count_table =
-  List.iter sorted_samples ~f:(fun sample ->
-      let counts = Hashtbl.find_exn count_table sample in
+  List.iter sorted_contigs ~f:(fun contig ->
+      let counts = Hashtbl.find_exn count_table contig in
       let all_counts =
-        List.map sorted_contigs ~f:(fun contig ->
-            let count = Hashtbl.find counts contig |> Option.value ~default:0 in
+        List.map sorted_samples ~f:(fun sample ->
+            let count = Hashtbl.find counts sample |> Option.value ~default:0 in
             Int.to_string count)
         |> String.concat ~sep:"\t"
       in
-      print_endline [%string "%{sample}\t%{all_counts}"])
+      print_endline [%string "%{contig}\t%{all_counts}"])
 
 let run pattern infiles =
   let all_samples = Hash_set.create (module String) in
   let all_contigs = Hash_set.create (module String) in
-  (* sample -> contigs -> coverage *)
+  (* contig -> sample -> coverage *)
   let count_table = Hashtbl.create (module String) in
   Array.iter infiles ~f:(fun filename ->
       process_stats_file ~all_samples ~all_contigs ~count_table ~pattern
@@ -148,8 +148,8 @@ let run pattern infiles =
   let sorted_samples = sort all_samples in
   let sorted_contigs = sort all_contigs in
   let header =
-    let contigs = String.concat sorted_contigs ~sep:"\t" in
-    [%string "sample\t%{contigs}"]
+    let samples = String.concat sorted_samples ~sep:"\t" in
+    [%string "contig\t%{samples}"]
   in
   print_endline header;
   print_count_table ~sorted_samples ~sorted_contigs ~count_table
