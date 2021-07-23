@@ -11,6 +11,10 @@ sample_name_match should be a string specifying a regex used to pull
 the sample name from covstats file name.  E.g., if you file names are
 like contigs.mapping___sample_1___.covstats.tsv, then you could pass
 in 'mapping___(.*)___'.
+
+Outputs (plus_reads + minus_reads) / seq_length * 1000 for each sample.  
+Does NOT weight by sample size.  I expect you to use CLR transform or 
+something similar in R before use.
 |eof}
 
 let help_msg = [%string "bbmap_count_table v%{version}\n\n%{usage_msg}"]

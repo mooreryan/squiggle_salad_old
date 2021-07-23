@@ -14,6 +14,10 @@ With no arguments
   like contigs.mapping___sample_1___.covstats.tsv, then you could pass
   in 'mapping___(.*)___'.
   
+  Outputs (plus_reads + minus_reads) / seq_length * 1000 for each sample.  
+  Does NOT weight by sample size.  I expect you to use CLR transform or 
+  something similar in R before use.
+  
   [1]
 
 With one arg
@@ -32,25 +36,29 @@ With one arg
   like contigs.mapping___sample_1___.covstats.tsv, then you could pass
   in 'mapping___(.*)___'.
   
+  Outputs (plus_reads + minus_reads) / seq_length * 1000 for each sample.  
+  Does NOT weight by sample size.  I expect you to use CLR transform or 
+  something similar in R before use.
+  
   [1]
 
 With a single sample.
 
   $ bbmap_count_table 'mapping___(.*)___' contigs.mapping___sample_1___.covstats.txt
   contig	sample_1
-  Contig_1	11
-  Contig_2	22
-  Contig_3	33
+  Contig_1	11000.
+  Contig_2	2200.
+  Contig_3	330.
 
 With multiple samples
 
   $ bbmap_count_table 'mapping___(.*)___' contigs.mapping___sample_1___.covstats.txt contigs.mapping___sample_2___.covstats.txt contigs.mapping___sample_3___.covstats.txt
   contig	sample_1	sample_2	sample_3
-  Contig_1	11	0	0
-  Contig_2	22	2200	0
-  Contig_3	33	3300	0
-  Contig_4	0	4400	0
-  Contig_5	0	0	550000
+  Contig_1	11000.	0.	0.
+  Contig_2	2200.	220000.	0.
+  Contig_3	330.	33000.	0.
+  Contig_4	0.	4400.	0.
+  Contig_5	0.	0.	55000.
 
 With bad pattern
 

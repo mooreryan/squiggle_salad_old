@@ -35,6 +35,8 @@ let sort set = Hash_set.to_list set |> List.sort ~compare:String.compare
 
 (* Program stuff *)
 
+let count_weight = 1000.0
+
 let expected_header =
   "#ID\tAvg_fold\tLength\tRef_GC\tCovered_percent\tCovered_bases\tPlus_reads\tMinus_reads\tRead_GC\tMedian_fold\tStd_Dev"
 
@@ -109,7 +111,11 @@ let process_coverage ~all_samples ~all_contigs ~count_table coverage =
   if Hashtbl.mem counts sample then
     Or_error.error_string [%string "%{contig} is duplicated in %{sample}"]
   else
-    Or_error.return @@ Hashtbl.set counts ~key:sample ~data:coverage.num_reads
+    let weighted_count =
+      Float.(
+        of_int coverage.num_reads /. of_int coverage.length *. count_weight)
+    in
+    Or_error.return @@ Hashtbl.set counts ~key:sample ~data:weighted_count
 
 (* Process one of the stats files. Get the sample name, convert rows to
    coveragesand track the samples, contigs, and counts. *)
@@ -130,8 +136,10 @@ let print_count_table ~sorted_samples ~sorted_contigs ~count_table =
       let counts = Hashtbl.find_exn count_table contig in
       let all_counts =
         List.map sorted_samples ~f:(fun sample ->
-            let count = Hashtbl.find counts sample |> Option.value ~default:0 in
-            Int.to_string count)
+            let count =
+              Hashtbl.find counts sample |> Option.value ~default:0.0
+            in
+            Float.to_string count)
         |> String.concat ~sep:"\t"
       in
       print_endline [%string "%{contig}\t%{all_counts}"])
