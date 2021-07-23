@@ -1,0 +1,8 @@
+(library
+ (name test_hfsp)
+ (libraries core_kernel hfsp)
+ (inline_tests)
+ (preprocess (pps ppx_jane ppx_expect ppx_inline_test)))
+
+(cram
+ (deps %{bin:hfsp}))

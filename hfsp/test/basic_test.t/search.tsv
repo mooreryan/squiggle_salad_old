@@ -1,0 +1,9 @@
+query	target	pident	bits	cigar
+q1	t1	1.0	100	100M
+q1	t1	0.95	95	100M
+bad thing	silly  
+q1	t2	1.00	50	100M
+q1	t2	0.05	40	100M
+q2	t1	1.00	100	100M
+apple	pie	qdrw100	atuu50	hton100M
+q3	t3	1.00	100	100M

@@ -1,0 +1,6 @@
+(executable
+ (public_name hfsp)
+ (name main)
+ (modules main)
+ (libraries core_kernel re2 hfsp)
+ (preprocess (pps ppx_jane)))
