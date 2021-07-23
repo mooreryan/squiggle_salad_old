@@ -1,0 +1,3 @@
+# Cram tests end in *.t, but so do the folders they live in, so ignore both.
+*/test/*.t -linguist-detectable
+*/test/*.t/*.t -linguist-detectable
