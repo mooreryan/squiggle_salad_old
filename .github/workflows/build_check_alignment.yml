@@ -1,4 +1,4 @@
-name: Build and test
+name: check_alignment
 
 on:
   push:
@@ -31,8 +31,8 @@ jobs:
           dune-cache: true
           cache-prefix: v1-${{ matrix.os }}
 
-      - run: dune build --profile=release
+      - run: (cd check_alignment && dune build --profile=release)
 
-      - run: dune install
+      - run: (cd check_alignment && dune install)
 
-      - run: dune test
+      - run: (cd check_alignment && dune test)
