@@ -1,0 +1,9 @@
+(library
+ (name test_check_alignment)
+ (libraries core_kernel bio_io lib)
+ (inline_tests)
+ (preprocess
+  (pps ppx_inline_test ppx_expect ppx_sexp_conv)))
+
+(cram
+ (deps %{bin:check_alignment}))

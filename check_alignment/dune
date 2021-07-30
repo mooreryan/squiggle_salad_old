@@ -1,0 +1,15 @@
+(executable
+ (public_name check_alignment)
+ (name check_alignment)
+ (modules check_alignment)
+ (libraries bio_io core_kernel lib)
+ (preprocess
+  (pps ppx_jane ppx_expect)))
+
+(library
+ (name lib)
+ (modules lib)
+ (libraries bio_io core_kernel re2)
+ (inline_tests)
+ (preprocess
+  (pps ppx_jane ppx_expect)))
