@@ -45,12 +45,21 @@ let%expect_test _ =
     {| (Error ("Error parsing float" (Invalid_argument "Float.of_string d"))) |}]
 
 let%expect_test _ =
-  print_line_parse_result @@ Lib.parse_search_line "a\tb\t1\t2\tpie";
-  [%expect
-    {|
+  let redact s =
+    Re2.replace_exn (Re2.create_exn "\\(.*Cigar") s ~f:(fun _ ->
+        "(REDACTED Cigar")
+  in
+  let print_it x =
+    print_endline @@ redact
+    @@ Sexp.to_string_hum ~indent:1 ([%sexp_of: Lib.search_record Or_error.t] x)
+  in
+  print_it @@ Lib.parse_search_line "a\tb\t1\t2\tpie";
+  [%expect {|
     (Error
      ("Error parsing cigar string"
-      (lib/cigar.ml.Cigar_parse_exn "Expected int or Operation. Got p"))) |}]
+      (REDACTED Cigar_parse_exn "Expected int or Operation. Got p")))
+
+    |}]
 
 let%expect_test "fident too low" =
   print_line_parse_result @@ Lib.parse_search_line "a\tb\t-0.5\t2\tM";

@@ -1,9 +1,11 @@
 With no arguments
 
-  $ bbmap_count_table
+  $ bbmap_count_table 2> err
+  [1]
+  $ sed -E 's/(bbmap_count_table version).*/\1 REDACTED/' err
   ERROR -- you need at least 2 command line arguments!
   
-  bbmap_count_table v0.1.0
+  bbmap_count_table version REDACTED
   
   usage: bbmap_count_table <sample_name_match> <covstats_1> [covstats_2 ...]
   
@@ -18,14 +20,15 @@ With no arguments
   Does NOT weight by sample size.  I expect you to use CLR transform or 
   something similar in R before use.
   
-  [1]
 
 With one arg
 
-  $ bbmap_count_table apple  
+  $ bbmap_count_table apple 2> err
+  [1]
+  $ sed -E 's/(bbmap_count_table version).*/\1 REDACTED/' err 
   ERROR -- you need at least 2 command line arguments!
   
-  bbmap_count_table v0.1.0
+  bbmap_count_table version REDACTED
   
   usage: bbmap_count_table <sample_name_match> <covstats_1> [covstats_2 ...]
   
@@ -40,7 +43,6 @@ With one arg
   Does NOT weight by sample size.  I expect you to use CLR transform or 
   something similar in R before use.
   
-  [1]
 
 With a single sample.
 

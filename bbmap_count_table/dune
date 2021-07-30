@@ -3,7 +3,7 @@
  (name main)
  (modules main)
  (libraries core_kernel re2 lib)
- (preprocess (pps ppx_jane)))
+ (preprocess (pps ppx_getenv ppx_const ppx_jane)))
 
 (library
  (name lib)

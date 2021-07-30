@@ -1,6 +1,6 @@
 open! Core_kernel
 
-let version = "0.1.0"
+let version = match%const [%getenv "GIT_COMMIT_HASH"] with "" -> "na" | x -> x
 
 let usage_msg =
   {eof|usage: bbmap_count_table <sample_name_match> <covstats_1> [covstats_2 ...]
@@ -17,7 +17,7 @@ Does NOT weight by sample size.  I expect you to use CLR transform or
 something similar in R before use.
 |eof}
 
-let help_msg = [%string "bbmap_count_table v%{version}\n\n%{usage_msg}"]
+let help_msg = [%string "bbmap_count_table version %{version}\n\n%{usage_msg}"]
 
 let parse_args () =
   let args = Sys.argv in

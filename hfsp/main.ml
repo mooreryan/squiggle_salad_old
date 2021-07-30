@@ -1,7 +1,7 @@
 open! Core_kernel
 open Hfsp
 
-let version = "0.1.0"
+let version = match%const [%getenv "GIT_COMMIT_HASH"] with "" -> "na" | x -> x
 
 let usage_msg =
   {eof|usage: hfsp <method: overall|pair> <search_out.tsv> > out.tsv
@@ -19,7 +19,7 @@ Don't forget to run mmseqs2 with
   --format-output query,target,fident,bits,cigar
 |eof}
 
-let help_msg = [%string "hfsp v%{version}\n\n%{usage_msg}"]
+let help_msg = [%string "hfsp version %{version}\n\n%{usage_msg}"]
 
 let parse_args () =
   let args = Sys.argv in

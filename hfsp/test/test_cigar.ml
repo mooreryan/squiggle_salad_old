@@ -1,8 +1,21 @@
 open! Core_kernel
 open Hfsp.Cigar
 
+(* let redact s =
+ *   Re2.replace_exn (Re2.create_exn "\\(.*Cigar") s ~f:(fun _ ->
+ *       "(REDACTED Cigar")
+ * in
+ * let print_it x =
+ *   print_endline @@ redact
+ *   @@ Sexp.to_string_hum ~indent:1 ([%sexp_of: Lib.search_record Or_error.t] x)
+ * in *)
+
 let print_cigar_parse_result x =
-  print_endline
+  let redact s =
+    Re2.replace_exn (Re2.create_exn "\\(.*Cigar") s ~f:(fun _ ->
+        "(REDACTED Cigar")
+  in
+  print_endline @@ redact
   @@ Sexp.to_string_hum ~indent:1 ([%sexp_of: cigar_pair list Or_error.t] x)
 
 let%expect_test _ =
@@ -11,7 +24,7 @@ let%expect_test _ =
     {|
     (Error
      ("Error parsing cigar string"
-      (lib/cigar.ml.Cigar_parse_exn "Expected int or Operation. Got A"))) |}]
+      (REDACTED Cigar_parse_exn "Expected int or Operation. Got A"))) |}]
 
 let%expect_test _ =
   print_cigar_parse_result @@ parse_cigar_string "123Aapple";
@@ -19,7 +32,7 @@ let%expect_test _ =
     {|
     (Error
      ("Error parsing cigar string"
-      (lib/cigar.ml.Cigar_parse_exn "Expected int or Operation. Got A"))) |}]
+      (REDACTED Cigar_parse_exn "Expected int or Operation. Got A"))) |}]
 
 let%expect_test _ =
   print_cigar_parse_result @@ parse_cigar_string "M";

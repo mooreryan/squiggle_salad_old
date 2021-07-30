@@ -3,4 +3,4 @@
  (name main)
  (modules main)
  (libraries core_kernel re2 hfsp)
- (preprocess (pps ppx_jane)))
+ (preprocess (pps ppx_getenv ppx_const ppx_jane)))

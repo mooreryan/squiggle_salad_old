@@ -1,6 +1,6 @@
 (library
  (name test_hfsp)
- (libraries core_kernel hfsp)
+ (libraries core_kernel hfsp re2)
  (inline_tests)
  (preprocess (pps ppx_jane ppx_expect ppx_inline_test)))
 

@@ -4,7 +4,7 @@
  (modules check_alignment)
  (libraries bio_io core_kernel lib)
  (preprocess
-  (pps ppx_jane ppx_expect)))
+  (pps ppx_getenv ppx_const ppx_jane ppx_expect)))
 
 (library
  (name lib)

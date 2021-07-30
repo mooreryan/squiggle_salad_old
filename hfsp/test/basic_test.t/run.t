@@ -1,9 +1,11 @@
 No arguments
 
-  $ hfsp
+  $ hfsp 2> err
+  [1]
+  $ sed -E 's/(hfsp version).*/\1 REDACTED/' err
   ERROR -- you need at least 2 command line arguments!
   
-  hfsp v0.1.0
+  hfsp version REDACTED
   
   usage: hfsp <method: overall|pair> <search_out.tsv> > out.tsv
   
@@ -19,14 +21,16 @@ No arguments
   Don't forget to run mmseqs2 with 
     --format-output query,target,fident,bits,cigar
   
-  [1]
+
 
 One argument
 
-  $ hfsp apple  
+  $ hfsp apple 2> err
+  [1]
+  $ sed -E 's/(hfsp version).*/\1 REDACTED/' err
   ERROR -- you need at least 2 command line arguments!
   
-  hfsp v0.1.0
+  hfsp version REDACTED
   
   usage: hfsp <method: overall|pair> <search_out.tsv> > out.tsv
   
@@ -42,7 +46,6 @@ One argument
   Don't forget to run mmseqs2 with 
     --format-output query,target,fident,bits,cigar
   
-  [1]
 
 Two args.  First bad.
 
