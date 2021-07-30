@@ -31,8 +31,8 @@ jobs:
           dune-cache: true
           cache-prefix: v1-${{ matrix.os }}
 
-      - run: (cd check_alignment && dune build --profile=release)
+      - run: (cd check_alignment && opam exec -- dune build --profile=release)
 
-      - run: (cd check_alignment && dune install)
+      - run: (cd check_alignment && opam exec -- dune install)
 
-      - run: (cd check_alignment && dune test)
+      - run: (cd check_alignment && opam exec -- dune test)
