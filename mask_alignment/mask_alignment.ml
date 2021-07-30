@@ -32,15 +32,6 @@ let parse_filename fname =
   if Sys.file_exists fname then fname
   else abort [%string "ERROR -- File '%{fname}' does not exist"]
 
-(* let gap_char = Re2.create_exn "[^a-zA-Z]"
- * let gap_char = Re2.create_exn "ashioen"
- * let is_gap_char c = Re2.matches gap_char (String.of_char c)
- * let num_gaps ary = Array.count ary ~f:(fun c -> c)
- * 
- * (\* Columns may have a gap ratio less than or equal to max_gap_ratio. *\)
- * let keep_column ~num_seqs ~max_gap_ratio ~aln_column =
- *   Float.(gap_ratio (num_gaps aln_column) num_seqs <= max_gap_ratio) *)
-
 let gap_ratio num_gaps num_seqs = Int.to_float num_gaps /. Int.to_float num_seqs
 
 (* Read in the records. Check that all alignment lengths are good. *)
@@ -102,7 +93,7 @@ let good_columns = get_good_columns ~aln_len ~num_seqs records max_gap_ratio
 
 let masked_seq_length = Array.length good_columns
 
-let print_stuff () =
+let print_masked_alignment () =
   Array.iter records ~f:(fun record ->
       let seq = record |> Fasta_record.seq in
       (* Reusing this buffer saves a bit of time, but not worth it. Simpler to
@@ -117,7 +108,4 @@ let print_stuff () =
       let new_record = Fasta_record.with_seq new_seq record in
       print_endline @@ Fasta_record.to_string new_record)
 
-let () = print_stuff ()
-
-(* TODO i would be interested to see how a more aggressive thing like the bytes
-   1d block thing is. *)
+let () = print_masked_alignment ()
