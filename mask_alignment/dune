@@ -1,0 +1,5 @@
+(executable
+ (name mask_alignment)
+ (public_name mask_alignment)
+ (libraries core_kernel bio_io re2)
+ (preprocess (pps ppx_getenv ppx_const ppx_jane)))
